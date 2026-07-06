@@ -1,0 +1,12 @@
+<launch>
+    <arg name="odom_topic" value="/car_0/odometry" />
+    <arg name="cloud_topic" value="/car_0_laser_simulator/car_0_local_pointcloud/map" />
+    <arg name="params_file" default="elevation_map.yaml" />
+
+    <rosparam command="load" file="$(find terrain_analyzer)/params/$(arg params_file)" />
+
+    <node pkg="terrain_analyzer" name="terrain_analyzer" type="terrain_analyzer" output="screen">
+        <remap from="~odom" to="$(arg odom_topic)"/>
+        <remap from="~cloud" to="$(arg cloud_topic)"/>
+    </node>
+</launch>

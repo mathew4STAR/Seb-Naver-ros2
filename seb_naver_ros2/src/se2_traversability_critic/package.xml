@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>se2_traversability_critic</name>
+  <version>0.1.0</version>
+  <description>Nav2 MPPI Critic plugin for evaluating SE(2) grid traversability.</description>
+  <maintainer email="user@todo.todo">User</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>nav2_mppi_controller</depend>
+  <depend>nav2_core</depend>
+  <depend>se2_grid_core</depend>
+  <depend>se2_grid_msgs</depend>
+  <depend>pluginlib</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

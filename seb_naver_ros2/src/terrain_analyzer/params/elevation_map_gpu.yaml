@@ -1,0 +1,47 @@
+# ROS2 parameter file for terrain_analyzer_node (GPU/CUDA mode)
+# Parameters are declared under the node name with dots as separators
+terrain_analyzer_node:
+  ros__parameters:
+    sensor_processors:
+      use_voxel_filter: false
+      voxel_size: 0.01
+      ignore_z_max: 0.5
+      ignore_z_min: -2.0
+      sensor2BodyR: [1.0, 0.0, 0.0,
+                     0.0, 1.0, 0.0,
+                     0.0, 0.0, 1.0]
+      sensor2BodyT: [0.0, 0.0, 0.0]
+      ouster:
+        beam_sigma: 0.008
+
+    elevation_map:
+      length_pos_x: 10.0
+      length_pos_y: 10.0
+      resolution_pos: 0.1
+      resolution_yaw: 0.2
+      min_var: 0.0001
+      max_var: 0.05
+      min_var_hori: 0.0001
+      max_var_hori: 0.05
+      mahalanobis_threshold: 2.5
+      ellipsoid_x: 0.4
+      ellipsoid_y: 0.3
+      ellipsoid_offset: [0.13, 0.0]
+      iter_num: 1
+
+    gpu_added_params:
+      verbose: true
+      normal_radius: 0.15
+      max_phx: 0.786
+      max_phy: 1.571
+      max_curvature: 1000.0
+      weight_phi: 0.2
+      weight_curvature: 0.6
+
+    post_processors:
+      - name: sdf
+        type: postProcessor/SignedDistanceField
+        params:
+          input_layer: sdf
+          output_layer: sdf_cpu
+          threshold: 0.5

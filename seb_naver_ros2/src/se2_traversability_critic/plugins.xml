@@ -1,0 +1,5 @@
+<library path="se2_traversability_critic">
+  <class name="se2_critics::SE2TraversabilityCritic" type="se2_critics::SE2TraversabilityCritic" base_class_type="mppi::critics::CriticFunction">
+    <description>Evaluates SE(2) grid risk for MPPI trajectories.</description>
+  </class>
+</library>

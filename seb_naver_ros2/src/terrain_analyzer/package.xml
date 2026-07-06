@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>terrain_analyzer</name>
+  <version>0.1.0</version>
+  <description>Generates an SE(2) grid map from distance measurements and robot pose information. Ported from ZJU-FAST-Lab/seb_naver.</description>
+  <maintainer email="xulon666@gmail.com">Long Xu</maintainer>
+  <license>BSD</license>
+  <url type="website">https://github.com/ZJU-FAST-Lab/uneven_mapping</url>
+  <url type="bugtracker">https://github.com/ZJU-FAST-Lab/uneven_mapping/issues</url>
+  <author email="xulon666@gmail.com">Long Xu</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>se2_grid_core</depend>
+  <depend>se2_grid_msgs</depend>
+  <depend>se2_grid_ros</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>message_filters</depend>
+  <depend>pcl_conversions</depend>
+  <depend>cv_bridge</depend>
+  <depend>pluginlib</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_eigen</depend>
+  <depend>boost</depend>
+  <depend>eigen</depend>
+  <depend>libopencv-dev</depend>
+  <depend>libpcl-all-dev</depend>
+  <depend>yaml-cpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,35 @@
+<class_libraries>
+    <library path="lib/libpost_processor_plugin">
+      <class name="postProcessor/MeanInRadiusFilter" type="terrain_analyzer::MeanInRadiusFilter" base_class_type="terrain_analyzer::PostProcessor<se2_grid::SE2Grid>" >
+        <description>
+          Compute for each cell of a layer the mean value inside a radius.
+        </description>
+      </class>
+      <class name="postProcessor/InpaintProcessor" type="terrain_analyzer::InpaintProcessor" base_class_type="terrain_analyzer::PostProcessor<se2_grid::SE2Grid>" >
+        <description>
+          Use OpenCV to inpaint/fill holes in a layer.
+        </description>
+      </class>
+      <class name="postProcessor/MathProcessor" type="terrain_analyzer::MathProcessor" base_class_type="terrain_analyzer::PostProcessor<se2_grid::SE2Grid>" >
+        <description>
+          Parse and evaluate a mathematical matrix expression with layers of a se2 grid.
+        </description>
+      </class>
+      <class name="postProcessor/NormalComputer" type="terrain_analyzer::NormalComputer" base_class_type="terrain_analyzer::PostProcessor<se2_grid::SE2Grid>" >
+        <description>
+          Compute the normal vectors of a layer in a map.
+        </description>
+      </class>
+      <class name="postProcessor/CurvatureComputer" type="terrain_analyzer::CurvatureComputer" base_class_type="terrain_analyzer::PostProcessor<se2_grid::SE2Grid>" >
+        <description>
+          NOTE!: Compute the curvatures of a layer in a map using quadratic curve, but the effect is not good.
+        </description>
+      </class>
+      <class name="postProcessor/SignedDistanceField" type="terrain_analyzer::SignedDistanceField" base_class_type="terrain_analyzer::PostProcessor<se2_grid::SE2Grid>" >
+        <description>
+          Create SDF for a layer with safe distance. (TO BE IMPROVED)
+        </description>
+      </class>
+    </library>
+</class_libraries>
+  

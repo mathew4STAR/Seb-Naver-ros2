@@ -1,0 +1,60 @@
+terrain_analyzer:
+  sensor_processors:
+    use_voxel_filter: false
+    voxel_size: 0.01
+    ignore_z_max: 1.0
+    ignore_z_min: -2.0
+    sensor2BodyR: [1, 0, 0,
+                   0, 1, 0,
+                   0, 0, 1]
+    sensor2BodyT: [0.0, 0.0, 0.0]
+    ouster:
+      beam_sigma: 0.008
+  elevation_map:
+    length_pos_x: 12.8
+    length_pos_y: 12.8
+    resolution_pos: 0.1
+    min_var: 0.0001
+    max_var: 0.05
+    min_var_hori: 0.0001
+    max_var_hori: 0.05
+    mahalanobis_threshold: 2.5
+  post_processors:
+    - name: inpaint
+      type: postProcessor/InpaintProcessor
+      params:
+        input_layer: elevation
+        output_layer: elevation_inpainted
+        radius: 0.1
+    - name: mean_in_radius
+      type: postProcessor/MeanInRadiusFilter
+      params:
+        input_layer: elevation_inpainted
+        output_layer: elevation_smooth
+        radius: 0.12
+    - name: normals
+      type: postProcessor/NormalComputer
+      params:
+        input_layer: elevation_inpainted
+        output_layers_prefix: normal_vectors_
+        output_curv_layer: curvature
+        radius: 0.12
+    - name: slope
+      type: postProcessor/MathProcessor
+      params:
+        output_layer: slope
+        has_so2: false
+        expression: acos(normal_vectors_z)
+    - name: roughness
+      type: postProcessor/MathProcessor
+      params:
+        output_layer: roughness
+        has_so2: false
+        expression: abs(elevation_inpainted - elevation_smooth)
+    - name: sdf
+      type: postProcessor/SignedDistanceField
+      params:
+        input_layer: roughness
+        output_layer: sdf
+        threshold: 0.5
+        
