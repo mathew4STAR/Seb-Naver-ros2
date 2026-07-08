@@ -26,7 +26,7 @@ find_package(Eigen3 REQUIRED)
 ## Build ##
 ###########
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
   src/SE2GridRosConverter.cpp
   src/SE2GridMsgHelpers.cpp
 )

@@ -21,32 +21,32 @@ namespace terrain_analyzer
             {
                 if (!PostProcessor::getParam(std::string("radius"), radius_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "MinInRadius filter did not find parameter `radius`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "MinInRadius filter did not find parameter `radius`.");
                     return false;
                 }
 
                 if (radius_ < 0.0)
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "MinInRadius filter: Radius must be greater than zero.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "MinInRadius filter: Radius must be greater than zero.");
                     return false;
                 }
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "Radius = %f.", radius_);
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "Radius = %f.", radius_);
 
                 if (!PostProcessor::getParam(std::string("input_layer"), inputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "MinInRadius filter did not find parameter `input_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "MinInRadius filter did not find parameter `input_layer`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "MinInRadius input layer is = %s.", inputLayer_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "MinInRadius input layer is = %s.", inputLayer_.c_str());
 
                 if (!PostProcessor::getParam(std::string("output_layer"), outputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "Step filter did not find parameter `output_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "Step filter did not find parameter `output_layer`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "MinInRadius output_layer = %s.", outputLayer_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "MinInRadius output_layer = %s.", outputLayer_.c_str());
 
                 return true;
             }

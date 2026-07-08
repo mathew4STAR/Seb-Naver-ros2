@@ -35,7 +35,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             os.path.join(pkg_share, 'params', 'elevation_map_gpu.yaml'),
-            {'param_file_path': os.path.join(pkg_share, 'params', 'elevation_map_gpu.yaml')}
+            {'param_file_path': os.path.join(pkg_share, 'params', 'post_processors.yaml')}
         ],
         remappings=[
             ('odom', odom_topic),

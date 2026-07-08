@@ -1,4 +1,4 @@
-Header header
+std_msgs/Header header
 
 # Resolution of the grid in position [m/cell].
 float64 pos_resolution

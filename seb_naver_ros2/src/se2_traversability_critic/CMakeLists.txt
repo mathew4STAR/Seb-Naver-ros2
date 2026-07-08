@@ -11,6 +11,7 @@ find_package(nav2_mppi_controller REQUIRED)
 find_package(nav2_core REQUIRED)
 find_package(se2_grid_core REQUIRED)
 find_package(se2_grid_msgs REQUIRED)
+find_package(se2_grid_ros REQUIRED)
 find_package(pluginlib REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED
@@ -28,10 +29,11 @@ ament_target_dependencies(${PROJECT_NAME}
   nav2_core
   se2_grid_core
   se2_grid_msgs
+  se2_grid_ros
   pluginlib
 )
 
-pluginlib_export_plugin_description_file(nav2_core plugins.xml)
+pluginlib_export_plugin_description_file(nav2_mppi_controller plugins.xml)
 
 install(TARGETS ${PROJECT_NAME}
   EXPORT export_${PROJECT_NAME}
@@ -57,6 +59,7 @@ ament_export_dependencies(
   nav2_core
   se2_grid_core
   se2_grid_msgs
+  se2_grid_ros
   pluginlib
 )
 

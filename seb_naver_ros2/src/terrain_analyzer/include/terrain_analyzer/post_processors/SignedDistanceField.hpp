@@ -59,25 +59,25 @@ namespace terrain_analyzer
             {
                 if (!PostProcessor::getParam(std::string("threshold"), threshold_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "SignedDistanceField did not find parameter `threshold`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "SignedDistanceField did not find parameter `threshold`.");
                     return false;
                 }
 
                 if (!PostProcessor::getParam(std::string("input_layer"), inputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "SignedDistanceField did not find parameter `input_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "SignedDistanceField did not find parameter `input_layer`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "SignedDistanceField input layer is = %s.", inputLayer_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "SignedDistanceField input layer is = %s.", inputLayer_.c_str());
 
                 if (!PostProcessor::getParam(std::string("output_layer"), outputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "Step filter did not find parameter `output_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "Step filter did not find parameter `output_layer`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "SignedDistanceField output_layer = %s.", outputLayer_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "SignedDistanceField output_layer = %s.", outputLayer_.c_str());
 
                 return true;
             }
@@ -201,7 +201,7 @@ namespace terrain_analyzer
                             neg_map(x, y) = 0;
                         } else 
                         {
-                            RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "what?");
+                            RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "what?");
                         }
                     }
 

@@ -1,5 +1,0 @@
-<launch>
-  <arg name="tank_id" default="0" />
-  <node pkg="tank_sdk" type="tank_sdk_udp_node" name="tank_$(arg tank_id)" output="screen">
-  </node>
-</launch>

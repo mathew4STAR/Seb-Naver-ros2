@@ -1,0 +1,9 @@
+terrain_analyzer_node:
+  ros__parameters:
+    post_processors:
+      - name: sdf
+        type: postProcessor/SignedDistanceField
+        params:
+          input_layer: sdf
+          output_layer: sdf_cpu
+          threshold: 0.5

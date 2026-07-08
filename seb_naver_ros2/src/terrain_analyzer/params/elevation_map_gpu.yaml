@@ -38,10 +38,4 @@ terrain_analyzer_node:
       weight_phi: 0.2
       weight_curvature: 0.6
 
-    post_processors:
-      - name: sdf
-        type: postProcessor/SignedDistanceField
-        params:
-          input_layer: sdf
-          output_layer: sdf_cpu
-          threshold: 0.5
+

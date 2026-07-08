@@ -1,8 +1,16 @@
 cmake_minimum_required(VERSION 3.5.1)
 
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
+if(POLICY CMP0104)
+  cmake_policy(SET CMP0104 NEW)
+endif()
+
 set(ENABLE_CUDA true)
 
 if(ENABLE_CUDA)
+  set(CMAKE_CUDA_ARCHITECTURES "87") # Jetson Orin NX
   project(terrain_analyzer CXX CUDA)
   add_definitions(-DENABLE_CUDA)
 else(ENABLE_CUDA)
@@ -37,9 +45,8 @@ find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED COMPONENTS common filters kdtree io)
 find_package(yaml-cpp REQUIRED)
 
-include_directories(
-  include
-  SYSTEM
+include_directories(include)
+include_directories(SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${Eigen3_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
@@ -67,6 +74,11 @@ if(ENABLE_CUDA)
   target_link_libraries(cuda_computer
     ${CUDA_LIBRARIES}
     ${OpenCV_LIBS}
+  )
+  ament_target_dependencies(cuda_computer
+    cv_bridge
+    sensor_msgs
+    std_msgs
   )
 
   target_link_libraries(${PROJECT_NAME}_library
@@ -145,29 +157,33 @@ ament_target_dependencies(${PROJECT_NAME}_node
 )
 
 # plugin
-add_library(post_processor_plugin
+add_library(terrain_analyzer_post_processor_plugin SHARED
   src/post_processors.cpp
 )
 
-target_include_directories(post_processor_plugin
+target_include_directories(terrain_analyzer_post_processor_plugin
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
-  SYSTEM PUBLIC
+)
+target_include_directories(terrain_analyzer_post_processor_plugin SYSTEM
+  PUBLIC
     ${OpenCV_INCLUDE_DIRS}
     ${Eigen3_INCLUDE_DIRS}
     ${YAML_CPP_INCLUDE_DIRS}
 )
 
-target_link_libraries(post_processor_plugin
+target_link_libraries(terrain_analyzer_post_processor_plugin
   ${OpenCV_LIBRARIES}
   yaml-cpp
 )
 
-ament_target_dependencies(post_processor_plugin
+ament_target_dependencies(terrain_analyzer_post_processor_plugin
   rclcpp
   se2_grid_core
   se2_grid_ros
+  cv_bridge
+  sensor_msgs
   pluginlib
 )
 
@@ -182,15 +198,28 @@ install(
     lib/${PROJECT_NAME}
 )
 
-install(
-  TARGETS
-    ${PROJECT_NAME}_library
-    post_processor_plugin
-  EXPORT export_${PROJECT_NAME}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
+if(ENABLE_CUDA)
+  install(
+    TARGETS
+      ${PROJECT_NAME}_library
+      cuda_computer
+      terrain_analyzer_post_processor_plugin
+    EXPORT export_${PROJECT_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+  )
+else()
+  install(
+    TARGETS
+      ${PROJECT_NAME}_library
+      terrain_analyzer_post_processor_plugin
+    EXPORT export_${PROJECT_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+  )
+endif()
 
 install(
   DIRECTORY
@@ -215,7 +244,7 @@ install(
 ## Export
 pluginlib_export_plugin_description_file(terrain_analyzer post_processors.xml)
 ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME}_library post_processor_plugin)
+ament_export_libraries(${PROJECT_NAME}_library terrain_analyzer_post_processor_plugin)
 ament_export_targets(export_${PROJECT_NAME})
 ament_export_dependencies(
   rclcpp se2_grid_core se2_grid_ros se2_grid_msgs

@@ -23,8 +23,9 @@ private:
   std::mutex grid_mutex_;
 
   float collision_cost_{1e6f};
-  unsigned int trajectory_point_step_{2};
-  unsigned int power_{1};
+  int trajectory_point_step_{2};
+  int power_{1};
+  float weight_{1.0f};
 };
 
 }  // namespace se2_critics

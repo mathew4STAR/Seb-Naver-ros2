@@ -34,7 +34,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {'use_sim_time': use_sim_time},
-            {'input_topic': '/terrain_analyzer/fused_map'}, # Assuming this is the TA output topic
+            {'input_topic': '/fused_map'}, 
             {'output_topic': '/map'},
             {'risk_threshold': 1.0},
             {'layer_name': 'risk'}

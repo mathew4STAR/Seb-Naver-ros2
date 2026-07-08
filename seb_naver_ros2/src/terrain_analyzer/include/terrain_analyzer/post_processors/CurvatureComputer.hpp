@@ -36,31 +36,31 @@ namespace terrain_analyzer
             {
                 if (!PostProcessor::getParam(std::string("input_layer"), inputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "CurvatureComputer did not find parameter `input_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "CurvatureComputer did not find parameter `input_layer`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "CurvatureComputer input layer is = %s.", inputLayer_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "CurvatureComputer input layer is = %s.", inputLayer_.c_str());
 
                 if (!PostProcessor::getParam(std::string("output_layer"), outputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "CurvatureComputer did not find parameter `output_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "CurvatureComputer did not find parameter `output_layer`.");
                     return false;
                 }
 
                 if (!PostProcessor::getParam(std::string("max_cur"), max_cur_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "CurvatureComputer did not find parameter `max_cur`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "CurvatureComputer did not find parameter `max_cur`.");
                     return false;
                 }
 
                 if (!PostProcessor::getParam(std::string("min_cur"), min_cur_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "CurvatureComputer did not find parameter `min_cur`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "CurvatureComputer did not find parameter `min_cur`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "CurvatureComputer output_layer = %s.", outputLayer_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "CurvatureComputer output_layer = %s.", outputLayer_.c_str());
 
                 return true;
             }

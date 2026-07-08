@@ -675,6 +675,23 @@ namespace EigenLab
 		mat.mapLocal();
 	}
 
+	template <typename T, bool IsFloat = std::is_floating_point<T>::value>
+	struct FinitesHelper {
+		template <typename Mat> static T min(const Mat& m) { return m.minCoeffOfFinites(); }
+		template <typename Mat> static T max(const Mat& m) { return m.maxCoeffOfFinites(); }
+		template <typename Mat> static T mean(const Mat& m) { return m.meanOfFinites(); }
+		template <typename Mat> static T sum(const Mat& m) { return m.sumOfFinites(); }
+		template <typename Mat> static T num(const Mat& m) { return m.numberOfFinites(); }
+	};
+	template <typename T>
+	struct FinitesHelper<T, false> {
+		template <typename Mat> static T min(const Mat& m) { return m.minCoeff(); }
+		template <typename Mat> static T max(const Mat& m) { return m.maxCoeff(); }
+		template <typename Mat> static T mean(const Mat& m) { return m.mean(); }
+		template <typename Mat> static T sum(const Mat& m) { return m.sum(); }
+		template <typename Mat> static T num(const Mat& m) { return m.size(); }
+	};
+
 	template <typename Derived>
 	bool Parser<Derived>::evalFunction_1_lt(const std::string & name, Value<Derived> & arg, Value<Derived> & result, std::true_type)
 	{
@@ -682,13 +699,13 @@ namespace EigenLab
 			result.setLocal(arg.matrix().minCoeff());
 			return true;
     } else if(name == "minOfFinites") {
-      result.setLocal(arg.matrix().minCoeffOfFinites());
+      result.setLocal(FinitesHelper<typename Derived::Scalar>::min(arg.matrix()));
       return true;
 		} else if(name == "max") {
 			result.setLocal(arg.matrix().maxCoeff());
 			return true;
 		} else if(name == "maxOfFinites") {
-			result.setLocal(arg.matrix().maxCoeffOfFinites());
+			result.setLocal(FinitesHelper<typename Derived::Scalar>::max(arg.matrix()));
 			return true;
 		} else if(name == "absmax") {
 			typename Derived::Scalar minimum = arg.matrix().minCoeff();
@@ -863,19 +880,19 @@ namespace EigenLab
 				result.setLocal(arg.matrix().mean());
 				return;
       } else if(name == "meanOfFinites") {
-        result.setLocal(arg.matrix().meanOfFinites());
+        result.setLocal(FinitesHelper<typename Derived::Scalar>::mean(arg.matrix()));
         return;
 			} else if(name == "sum") {
 				result.setLocal(arg.matrix().sum());
 				return;
 			} else if(name == "sumOfFinites") {
-				result.setLocal(arg.matrix().sumOfFinites());
+				result.setLocal(FinitesHelper<typename Derived::Scalar>::sum(arg.matrix()));
 				return;
 			} else if(name == "prod") {
 				result.setLocal(arg.matrix().prod());
 				return;
 			} else if(name == "numberOfFinites") {
-				result.setLocal(arg.matrix().numberOfFinites());
+				result.setLocal(FinitesHelper<typename Derived::Scalar>::num(arg.matrix()));
 				return;
 			} else if(name == "transpose") {
 				result.local() = arg.matrix().transpose();

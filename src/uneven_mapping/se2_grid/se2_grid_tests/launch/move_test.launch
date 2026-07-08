@@ -1,4 +1,0 @@
-<launch>
-    <node pkg="se2_grid_tests" type="move_test" name="se2_grid_move_test" output="screen" />
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find se2_grid_tests)/rviz/test.rviz" />
-</launch>

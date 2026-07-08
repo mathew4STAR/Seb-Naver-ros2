@@ -86,7 +86,7 @@ controller_server:
         plugin: "nav2_mppi_controller::PreferForwardCritic"
         weight: 5.0
       SE2TraversabilityCritic:
-        plugin: "se2_critics::SE2TraversabilityCritic"
+        plugin: "mppi::critics::SE2TraversabilityCritic"
         weight: 5.0
         collision_cost: 100000.0
         trajectory_point_step: 2
@@ -98,7 +98,7 @@ planner_server:
     expected_planner_frequency: 10.0
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_navfn_planner::NavfnPlanner"
+      plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.5
       use_astar: false
       allow_unknown: true

@@ -1,5 +1,0 @@
-float64 velocity
-float64 yaw_velocity
-float64 wheel_speed_left
-float64 wheel_speed_right
-float64 gear

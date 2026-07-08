@@ -11,6 +11,7 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/crop_box.h>
 #include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/common/transforms.h>
 
 #include <memory>
 #include <string>

@@ -14,9 +14,11 @@
   <depend>nav2_core</depend>
   <depend>se2_grid_core</depend>
   <depend>se2_grid_msgs</depend>
+  <depend>se2_grid_ros</depend>
   <depend>pluginlib</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
+    <nav2_mppi_controller plugin="${prefix}/plugins.xml" />
   </export>
 </package>

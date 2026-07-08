@@ -43,7 +43,9 @@ def generate_launch_description():
         arguments=[
             '-name', 'terrain_bot',
             '-topic', 'robot_description',
-            '-z', '1.0' # spawn slightly above the terrain
+            '-x', '-16.0',
+            '-y', '-16.0',
+            '-z', '1.0' # spawn higher above the terrain
         ],
         output='screen'
     )
@@ -57,8 +59,11 @@ def generate_launch_description():
             '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
             '/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
             '/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
-            '/scan_3d@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/scan_3d/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model'
+        ],
+        remappings=[
+            ('/scan_3d/points', '/scan_3d')
         ],
         parameters=[{'use_sim_time': True}],
         output='screen'

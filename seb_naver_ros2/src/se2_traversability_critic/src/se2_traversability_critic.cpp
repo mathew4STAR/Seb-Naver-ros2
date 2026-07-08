@@ -8,7 +8,7 @@ namespace se2_critics
 
 void SE2TraversabilityCritic::initialize()
 {
-  auto node = parent_->get_node();
+  auto node = parent_.lock();
   
   // Read parameters
   // Nav2 critic API usually expects parameters namespaced under the controller's namespace + critic name.
@@ -26,7 +26,8 @@ void SE2TraversabilityCritic::initialize()
   node->get_parameter(param_ns + "trajectory_point_step", trajectory_point_step_);
   node->get_parameter(param_ns + "power", power_);
 
-  // Note: CriticFunction base class handles the "weight" parameter natively.
+  auto getParam = parameters_handler_->getParamGetter(name_);
+  getParam(weight_, "weight", 1.0f);
 
   // Using /fused_map as default based on the implementation plan
   se2_grid_sub_ = node->create_subscription<se2_grid_msgs::msg::SE2Grid>(
@@ -56,8 +57,8 @@ void SE2TraversabilityCritic::score(mppi::CriticData & data)
   auto & trajectories = data.trajectories; 
   auto & costs = data.costs;
 
-  const auto batch_size = trajectories.x.rows();
-  const auto time_steps = trajectories.x.cols();
+  const auto batch_size = trajectories.x.shape(0);
+  const auto time_steps = trajectories.x.shape(1);
 
   for (size_t i = 0; i < batch_size; ++i) {
     float traj_cost = 0.0f;
@@ -72,7 +73,7 @@ void SE2TraversabilityCritic::score(mppi::CriticData & data)
       Eigen::Array3i index;
 
       if (se2_grid_->pos2Index(query, index)) {
-        if (se2_grid_->isValid(index, {"risk"})) {
+        if (se2_grid_->isValid(index, std::string("risk"))) {
           float risk = se2_grid_->at("risk", index);
           if (risk >= 1.0f) {
             in_collision = true;

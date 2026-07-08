@@ -90,10 +90,10 @@ namespace terrain_analyzer
     {
         node_ = node;
 
-        std::vector<float> sensor2BodyT;
+        std::vector<double> sensor2BodyT;
 
         /* hxlin fixed */
-        std::vector<float> ellipsoid_offset;
+        std::vector<double> ellipsoid_offset;
         
         Vector3f body2sensor_T;
         /* hxlin fixed */
@@ -127,7 +127,7 @@ namespace terrain_analyzer
         ignore_z_max = node_->declare_parameter("sensor_processors.ignore_z_max", 0.5);
         ignore_z_min = node_->declare_parameter("sensor_processors.ignore_z_min", -2.0);
         beam_sigma2 = node_->declare_parameter("sensor_processors.ouster.beam_sigma", 0.008);
-        sensor2BodyT = node_->declare_parameter("sensor_processors.sensor2BodyT", std::vector<float>{0.0, 0.0, 0.0});
+        sensor2BodyT = node_->declare_parameter("sensor_processors.sensor2BodyT", std::vector<double>{0.0, 0.0, 0.0});
 
         // elevation_map
         length_pos[0] = node_->declare_parameter("elevation_map.length_pos_x", 10.0);
@@ -142,7 +142,7 @@ namespace terrain_analyzer
         /* hxlin fixed */
         ellipsoid_x = node_->declare_parameter("elevation_map.ellipsoid_x", 0.4);
         ellipsoid_y = node_->declare_parameter("elevation_map.ellipsoid_y", 0.3);
-        ellipsoid_offset = node_->declare_parameter("elevation_map.ellipsoid_offset", std::vector<float>{0.13, 0.0});
+        ellipsoid_offset = node_->declare_parameter("elevation_map.ellipsoid_offset", std::vector<double>{0.13, 0.0});
         iter_num = node_->declare_parameter("elevation_map.iter_num", 1);
 
         // gpu_added_params

@@ -26,7 +26,9 @@ public:
       input_topic, 1, std::bind(&SE2ToOccupancyNode::gridCallback, this, std::placeholders::_1)
     );
 
-    pub_ = this->create_publisher<nav_msgs::msg::OccupancyGrid>(output_topic, 1);
+    rclcpp::QoS map_qos(1);
+    map_qos.transient_local();
+    pub_ = this->create_publisher<nav_msgs::msg::OccupancyGrid>(output_topic, map_qos);
     
     RCLCPP_INFO(this->get_logger(), "Started SE2 to OccupancyGrid converter. %s -> %s", input_topic.c_str(), output_topic.c_str());
   }
@@ -69,8 +71,8 @@ private:
     // In SE2Grid, size.x() corresponds to rows, size.y() corresponds to cols.
     // nav_msgs::OccupancyGrid data is row-major (y * width + x).
     
-    for (int y = 0; y < occ_grid.info.height; ++y) {
-      for (int x = 0; x < occ_grid.info.width; ++x) {
+    for (unsigned int y = 0; y < occ_grid.info.height; ++y) {
+      for (unsigned int x = 0; x < occ_grid.info.width; ++x) {
         Eigen::Array2i index(x, y); 
         
         float max_risk = -std::numeric_limits<float>::infinity();
@@ -85,8 +87,9 @@ private:
             }
           }
         } else {
-          if (se2_grid.isValid(index, {layer_name_})) {
-            max_risk = se2_grid.at(layer_name_, index);
+          Eigen::Array3i idx3(x, y, 0);
+          if (se2_grid.isValid(idx3, {layer_name_})) {
+            max_risk = se2_grid.at(layer_name_, idx3);
             valid = true;
           }
         }
@@ -97,7 +100,7 @@ private:
             occ_grid.data[occ_idx] = 100;
           } else {
             // Map [0, risk_threshold_) to [0, 99]
-            int cost = static_cast<int>(std::max(0.0f, (max_risk / risk_threshold_) * 99.0f));
+            int cost = static_cast<int>(std::max(0.0, (max_risk / risk_threshold_) * 99.0));
             occ_grid.data[occ_idx] = std::min(99, cost);
           }
         } else {

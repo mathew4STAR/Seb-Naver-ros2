@@ -1,5 +1,5 @@
 <class_libraries>
-    <library path="lib/libpost_processor_plugin">
+    <library path="terrain_analyzer_post_processor_plugin">
       <class name="postProcessor/MeanInRadiusFilter" type="terrain_analyzer::MeanInRadiusFilter" base_class_type="terrain_analyzer::PostProcessor<se2_grid::SE2Grid>" >
         <description>
           Compute for each cell of a layer the mean value inside a radius.

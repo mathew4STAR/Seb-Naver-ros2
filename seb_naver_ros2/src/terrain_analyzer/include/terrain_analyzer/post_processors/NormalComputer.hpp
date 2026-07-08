@@ -23,38 +23,38 @@ namespace terrain_analyzer
             {
                 if (!PostProcessor::getParam(std::string("radius"), radius_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "NormalComputer did not find parameter `radius`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "NormalComputer did not find parameter `radius`.");
                     return false;
                 }
 
                 if (radius_ < 0.0)
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "NormalComputer: Radius must be greater than zero.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "NormalComputer: Radius must be greater than zero.");
                     return false;
                 }
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "Radius = %f.", radius_);
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "Radius = %f.", radius_);
 
                 if (!PostProcessor::getParam(std::string("input_layer"), inputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "NormalComputer did not find parameter `input_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "NormalComputer did not find parameter `input_layer`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "NormalComputer input layer is = %s.", inputLayer_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "NormalComputer input layer is = %s.", inputLayer_.c_str());
 
                 if (!PostProcessor::getParam(std::string("output_layers_prefix"), outputLayersPrefix_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "Step filter did not find parameter `output_layers_prefix`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "Step filter did not find parameter `output_layers_prefix`.");
                     return false;
                 }
 
                 if (!PostProcessor::getParam(std::string("output_curv_layer"), outputCurvLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "Step filter did not find parameter `output_curv_layer`.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "Step filter did not find parameter `output_curv_layer`.");
                     return false;
                 }
 
-                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "NormalComputer output_layers_prefix = %s.", outputLayersPrefix_.c_str());
+                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "NormalComputer output_layers_prefix = %s.", outputLayersPrefix_.c_str());
 
                 return true;
             }
@@ -78,7 +78,7 @@ namespace terrain_analyzer
                         const double minRadius = 0.5 * mapOut.getResolutionPos();
                         if (radius_ <= minRadius)
                         {
-                            RCLCPP_WARN(rclcpp::get_logger(\"PostProcessors\"), "Estimation radius is smaller than allowed by the mapOut resolution (%f < %f)", radius_, minRadius);
+                            RCLCPP_WARN(rclcpp::get_logger("PostProcessors"), "Estimation radius is smaller than allowed by the mapOut resolution (%f < %f)", radius_, minRadius);
                         }
 
                         size_t nPoints = 0;
@@ -99,7 +99,7 @@ namespace terrain_analyzer
                         Eigen::Vector3d normalVector = Eigen::Vector3d::Zero();
                         if (nPoints < 3)
                         {
-                            RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "Not enough points to establish normal direction (nPoints = %i)", static_cast<int>(nPoints));
+                            RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "Not enough points to establish normal direction (nPoints = %i)", static_cast<int>(nPoints));
                             normalVector = Eigen::Vector3d::UnitZ();
                         } else
                         {
@@ -115,8 +115,8 @@ namespace terrain_analyzer
                             }
                             else
                             {
-                                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "Covariance matrix needed for eigen decomposition is degenerated.");
-                                RCLCPP_DEBUG(rclcpp::get_logger(\"PostProcessors\"), "Expected cause: data is on a straight line (nPoints = %i)", static_cast<int>(nPoints));
+                                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "Covariance matrix needed for eigen decomposition is degenerated.");
+                                RCLCPP_DEBUG(rclcpp::get_logger("PostProcessors"), "Expected cause: data is on a straight line (nPoints = %i)", static_cast<int>(nPoints));
                                 normalVector = Eigen::Vector3d::UnitZ();
                             }
                         }

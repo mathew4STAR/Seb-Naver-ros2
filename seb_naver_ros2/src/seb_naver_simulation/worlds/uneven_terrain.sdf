@@ -21,7 +21,7 @@
     <plugin
       filename="gz-sim-sensors-system"
       name="gz::sim::systems::Sensors">
-      <render_engine>ogre2</render_engine>
+      <render_engine>ogre</render_engine>
     </plugin>
 
     <light type="directional" name="sun">
@@ -43,22 +43,16 @@
       <link name="terrain_link">
         <collision name="terrain_collision">
           <geometry>
-            <heightmap>
-              <!-- Path is relative to Gazebo resource paths, usually handled by launch file env vars -->
-              <uri>model://seb_naver_simulation/worlds/terrain_heightmap.png</uri>
-              <size>50 50 2</size>
-              <pos>0 0 0</pos>
-            </heightmap>
+            <mesh>
+              <uri>file:///home/airlagx1/elevation_tests/Seb-Naver-ros2/seb_naver_ros2/src/seb_naver_simulation/meshes/terrainmodel.dae</uri>
+            </mesh>
           </geometry>
         </collision>
         <visual name="terrain_visual">
           <geometry>
-            <heightmap>
-              <uri>model://seb_naver_simulation/worlds/terrain_heightmap.png</uri>
-              <size>50 50 2</size>
-              <pos>0 0 0</pos>
-              <use_terrain_paging>false</use_terrain_paging>
-            </heightmap>
+            <mesh>
+              <uri>file:///home/airlagx1/elevation_tests/Seb-Naver-ros2/seb_naver_ros2/src/seb_naver_simulation/meshes/terrainmodel.dae</uri>
+            </mesh>
           </geometry>
           <material>
             <ambient>0.3 0.8 0.3 1</ambient>

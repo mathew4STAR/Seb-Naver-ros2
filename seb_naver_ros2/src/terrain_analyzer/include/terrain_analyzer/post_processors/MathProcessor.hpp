@@ -22,19 +22,19 @@ namespace terrain_analyzer
             {
                 if (!PostProcessor::getParam(std::string("expression"), expression_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "MathProcessor did not find parameter 'expression'.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "MathProcessor did not find parameter 'expression'.");
                     return false;
                 }
 
                 if (!PostProcessor::getParam(std::string("has_so2"), so2_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "MathProcessor did not find parameter 'has_so2'.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "MathProcessor did not find parameter 'has_so2'.");
                     return false;
                 }
 
                 if (!PostProcessor::getParam(std::string("output_layer"), outputLayer_))
                 {
-                    RCLCPP_ERROR(rclcpp::get_logger(\"PostProcessors\"), "MathProcessor did not find parameter 'output_layer'.");
+                    RCLCPP_ERROR(rclcpp::get_logger("PostProcessors"), "MathProcessor did not find parameter 'output_layer'.");
                     return false;
                 }
 

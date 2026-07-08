@@ -16,7 +16,7 @@ include(cmake/${PROJECT_NAME}-extras.cmake)
 ## Build ##
 ###########
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
    src/SE2Grid.cpp
 )
 
@@ -28,6 +28,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME}
   Eigen3::Eigen
+)
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+  EIGEN_FUNCTORS_PLUGIN="se2_grid_core/eigen_plugins/FunctorsPlugin.hpp"
+  EIGEN_DENSEBASE_PLUGIN="se2_grid_core/eigen_plugins/DenseBasePlugin.hpp"
 )
 
 #############
