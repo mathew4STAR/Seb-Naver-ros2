@@ -1,0 +1,8 @@
+# Blender 5.0.1 MTL File: 'planeinitial.blend'
+# www.blender.org
+
+newmtl Material
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.0 0.0 0.0
+map_Kd ../textures/bricks.jpeg

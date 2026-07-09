@@ -10,7 +10,8 @@ def generate_launch_description():
     pkg_share = get_package_share_directory('seb_naver_simulation')
     
     # Path to the SDF world
-    world_file = os.path.join(pkg_share, 'worlds', 'uneven_terrain.sdf')
+    # world_file = os.path.join(pkg_share, 'worlds', 'uneven_terrain.sdf')
+    world_file = os.path.join(pkg_share, 'worlds', 'terrain_plane.sdf')
     
     # Set the GZ_SIM_RESOURCE_PATH to find the heightmap png and the worlds
     gz_resource_path = SetEnvironmentVariable(
@@ -37,15 +38,30 @@ def generate_launch_description():
     )
 
     # Spawn Robot
+    # spawn coordinates for the uneven_terrain.sdf world:
+    # spawn_robot = Node(
+    #     package='ros_gz_sim',
+    #     executable='create',
+    #     arguments=[
+    #         '-name', 'terrain_bot',
+    #         '-topic', 'robot_description',
+    #         '-x', '-16.0',
+    #         '-y', '-16.0',
+    #         '-z', '1.0' # spawn higher above the terrain
+    #     ],
+    #     output='screen'
+    # )
+
     spawn_robot = Node(
         package='ros_gz_sim',
         executable='create',
         arguments=[
-            '-name', 'terrain_bot',
             '-topic', 'robot_description',
-            '-x', '-16.0',
-            '-y', '-16.0',
-            '-z', '1.0' # spawn higher above the terrain
+            '-name', 'mini_r1',
+            '-x', '-4.0',
+            '-y', '-6.0',
+            '-z', '0.05',
+            '-Y', '-1.5708'
         ],
         output='screen'
     )

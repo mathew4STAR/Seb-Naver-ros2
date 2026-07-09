@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
-  <world name="uneven_terrain">
+  <world name="terrain_plane">
     <physics name="1ms" type="ignored">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -44,7 +44,7 @@
         <collision name="terrain_collision">
           <geometry>
             <mesh>
-              <uri>file:///home/airlagx1/elevation_tests/Seb-Naver-ros2/seb_naver_ros2/src/seb_naver_simulation/meshes/terrainmodel.dae</uri>
+              <uri>file:///home/airlagx1/elevation_tests/Seb-Naver-ros2/seb_naver_ros2/src/seb_naver_simulation/meshes/terrainplane.obj</uri>
               <scale>0.7 0.7 1</scale>
             </mesh>
           </geometry>
@@ -52,15 +52,10 @@
         <visual name="terrain_visual">
           <geometry>
             <mesh>
-              <uri>file:///home/airlagx1/elevation_tests/Seb-Naver-ros2/seb_naver_ros2/src/seb_naver_simulation/meshes/terrainmodel.dae</uri>
+              <uri>file:///home/airlagx1/elevation_tests/Seb-Naver-ros2/seb_naver_ros2/src/seb_naver_simulation/meshes/terrainplane.obj</uri>
               <scale>0.7 0.7 1</scale>
             </mesh>
           </geometry>
-          <material>
-            <ambient>0.3 0.8 0.3 1</ambient>
-            <diffuse>0.3 0.8 0.3 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
         </visual>
       </link>
     </model>
