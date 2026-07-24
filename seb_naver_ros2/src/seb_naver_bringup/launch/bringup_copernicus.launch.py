@@ -12,18 +12,19 @@ def generate_launch_description():
     ta_dir = get_package_share_directory('terrain_analyzer')
     nav2_dir = get_package_share_directory('nav2_bringup')
     
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    params_file = os.path.join(bringup_dir, 'params', 'nav2_params.yaml')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    params_file = os.path.join(bringup_dir, 'params', 'nav2_params_hw.yaml')
 
     # 1. Gazebo Simulation
-    sim_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sim_dir, 'launch', 'sim.launch.py'))
-    )
+
 
     # 2. Terrain Analyzer
     ta_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(ta_dir, 'launch', 'terrain_analyzer.launch.py')),
-        # In a real scenario we might pass specific arguments here
+        launch_arguments={
+            'cloud_topic': '/velodyne_points',
+            'use_sim_time': use_sim_time
+        }.items()
     )
 
     # 3. SE2Grid to OccupancyGrid Converter
@@ -59,24 +60,14 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 5. SE2 Visualizer
-    se2_visualizer_cmd = Node(
-        package='se2_grid_ros',
-        executable='se2_visualizer_node',
-        name='se2_visualizer_node',
-        output='screen'
-    )
-
     # Remap scan_3d to the topic terrain_analyzer expects
     # In WP6 analysis, it says: /scan_3d -> remap to ~/cloud
     # Wait, terrain analyzer subscribes to "cloud". We can remap it in TA launch, or here.
     # Actually, we can just run a relay or remap globally if needed, but it's cleaner to let TA launch handle it or pass it.
     
     return LaunchDescription([
-        sim_cmd,
         static_tf,
         ta_cmd,
         grid_converter_cmd,
-        nav2_cmd,
-        se2_visualizer_cmd
+        nav2_cmd
     ])

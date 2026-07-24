@@ -31,6 +31,8 @@ add_library(${PROJECT_NAME} SHARED
   src/SE2GridMsgHelpers.cpp
 )
 
+add_executable(se2_visualizer_node src/se2_visualizer_node.cpp)
+
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
@@ -48,6 +50,15 @@ ament_target_dependencies(${PROJECT_NAME}
   builtin_interfaces
 )
 
+ament_target_dependencies(se2_visualizer_node
+  rclcpp
+  se2_grid_core
+  se2_grid_msgs
+  nav_msgs
+  std_msgs
+)
+target_link_libraries(se2_visualizer_node ${PROJECT_NAME})
+
 # Ensure message headers are generated before we build
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
@@ -61,6 +72,11 @@ install(
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
+)
+
+install(
+  TARGETS se2_visualizer_node
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 install(

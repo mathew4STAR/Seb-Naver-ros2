@@ -66,11 +66,13 @@ private:
     bool has_so2 = se2_grid.hasSO2(layer_name_);
     int size_yaw = se2_grid.getSizeYaw();
     
-    // In se2_grid_core, grid indexing is (row, col) = (x, y) generally, but let's check carefully.
-    // The underlying data is usually Eigen::MatrixXf which is accessed by (row, col).
     // In SE2Grid, size.x() corresponds to rows, size.y() corresponds to cols.
     // nav_msgs::OccupancyGrid data is row-major (y * width + x).
     
+    // For each (x, y) cell in the grid, if the layer has a theta (SO2) dimension,
+    // this loop iterates through all possible theta angles and takes the maximum 
+    // risk value. This ensures that if a position is risky or untraversable from 
+    // ANY orientation, the 2D occupancy grid cell will reflect that worst-case cost.
     for (unsigned int y = 0; y < occ_grid.info.height; ++y) {
       for (unsigned int x = 0; x < occ_grid.info.width; ++x) {
         Eigen::Array2i index(x, y); 
