@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 import os
@@ -34,7 +34,7 @@ def generate_launch_description():
         name='terrain_analyzer_node',
         output='screen',
         parameters=[
-            os.path.join(pkg_share, 'params', 'elevation_map_gpu.yaml'),
+            PathJoinSubstitution([pkg_share, 'params', params_file]),
             {'param_file_path': os.path.join(pkg_share, 'params', 'post_processors.yaml')}
         ],
         remappings=[

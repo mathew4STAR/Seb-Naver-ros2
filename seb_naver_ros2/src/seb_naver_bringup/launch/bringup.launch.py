@@ -67,6 +67,13 @@ def generate_launch_description():
         output='screen'
     )
 
+    se2_arrow_visualizer_cmd = Node(
+        package='se2_grid_ros',
+        executable='se2_arrow_visualizer_node',
+        name='se2_arrow_visualizer_node',
+        output='screen'
+    )
+
     # Remap scan_3d to the topic terrain_analyzer expects
     # In WP6 analysis, it says: /scan_3d -> remap to ~/cloud
     # Wait, terrain analyzer subscribes to "cloud". We can remap it in TA launch, or here.
@@ -78,5 +85,6 @@ def generate_launch_description():
         ta_cmd,
         grid_converter_cmd,
         nav2_cmd,
-        se2_visualizer_cmd
+        se2_visualizer_cmd,
+        se2_arrow_visualizer_cmd
     ])

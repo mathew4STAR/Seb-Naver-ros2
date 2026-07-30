@@ -11,6 +11,10 @@
 #include <message_filters/cache.h>
 #include <message_filters/subscriber.h>
 
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <tf2_eigen/tf2_eigen.hpp>
+
 // Eigen
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -25,6 +29,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+#include <pcl/common/transforms.h>
 
 namespace terrain_analyzer
 {
@@ -113,6 +118,8 @@ namespace terrain_analyzer
             rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr   normal_pub;
             rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr     shit_pub;
             rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr  cloud_sub;
+            std::shared_ptr<tf2_ros::Buffer>                                tf_buffer_;
+            std::shared_ptr<tf2_ros::TransformListener>                     tf_listener_;
             rclcpp::TimerBase::SharedPtr                                    map_timer;
             rclcpp::Time                                                    last_update_time;
     };

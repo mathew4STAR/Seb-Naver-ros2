@@ -132,7 +132,7 @@
     <origin xyz="0 0 0.15"/>
   </joint>
 
-  <!-- Modern Gazebo Diff Drive Plugin -->
+  <!-- Modern Gazebo Diff Drive Plugin (motor control only, no odom) -->
   <gazebo>
     <plugin
       filename="gz-sim-diff-drive-system"
@@ -141,12 +141,21 @@
       <right_joint>right_wheel_joint</right_joint>
       <wheel_separation>0.45</wheel_separation>
       <wheel_radius>0.1</wheel_radius>
-      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_publish_frequency>0</odom_publish_frequency>
       <topic>cmd_vel</topic>
+    </plugin>
+  </gazebo>
+
+  <!-- Ground Truth Odometry from simulation pose (no wheel slip) -->
+  <gazebo>
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_publish_frequency>50</odom_publish_frequency>
       <odom_topic>odom</odom_topic>
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
       <tf_topic>tf</tf_topic>
-      <frame_id>odom</frame_id>
-      <child_frame_id>base_link</child_frame_id>
     </plugin>
   </gazebo>
 

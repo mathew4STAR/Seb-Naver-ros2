@@ -66,37 +66,58 @@ private:
     bool has_so2 = se2_grid.hasSO2(layer_name_);
     int size_yaw = se2_grid.getSizeYaw();
     
-    // In SE2Grid, size.x() corresponds to rows, size.y() corresponds to cols.
-    // nav_msgs::OccupancyGrid data is row-major (y * width + x).
-    
-    // For each (x, y) cell in the grid, if the layer has a theta (SO2) dimension,
-    // this loop iterates through all possible theta angles and takes the maximum 
-    // risk value. This ensures that if a position is risky or untraversable from 
-    // ANY orientation, the 2D occupancy grid cell will reflect that worst-case cost.
-    for (unsigned int y = 0; y < occ_grid.info.height; ++y) {
-      for (unsigned int x = 0; x < occ_grid.info.width; ++x) {
-        Eigen::Array2i index(x, y); 
-        
+    // Iterate over all raw matrix indices in the SE2Grid. For each cell:
+    // 1. Read the risk data directly from the raw index (valid for at() access).
+    // 2. Use index2Pos() to find the correct world position for this cell.
+    //    This handles both the axis inversion (SE2Grid indices decrease with
+    //    increasing world coords) and the circular buffer start_index wrapping.
+    // 3. Compute the correct OccupancyGrid cell from the world position.
+    int rows = se2_grid.getSizePos()(0);
+    int cols = se2_grid.getSizePos()(1);
+    double occ_origin_x = occ_grid.info.origin.position.x;
+    double occ_origin_y = occ_grid.info.origin.position.y;
+    double occ_res = occ_grid.info.resolution;
+
+    for (int row = 0; row < rows; ++row) {
+      for (int col = 0; col < cols; ++col) {
+
         float max_risk = -std::numeric_limits<float>::infinity();
         bool valid = false;
 
         if (has_so2) {
           for (int yaw = 0; yaw < size_yaw; ++yaw) {
-            Eigen::Array3i idx3(x, y, yaw);
+            Eigen::Array3i idx3(row, col, yaw);
             if (se2_grid.isValid(idx3, {layer_name_})) {
               max_risk = std::max(max_risk, se2_grid.at(layer_name_, idx3));
               valid = true;
             }
           }
         } else {
-          Eigen::Array3i idx3(x, y, 0);
+          Eigen::Array3i idx3(row, col, 0);
           if (se2_grid.isValid(idx3, {layer_name_})) {
             max_risk = se2_grid.at(layer_name_, idx3);
             valid = true;
           }
         }
 
-        int occ_idx = y * occ_grid.info.width + x;
+        // Use index2Pos to get the true world position for this cell
+        // (handles axis inversion + circular buffer start_index)
+        Eigen::Vector3d world_pos;
+        Eigen::Array3i idx_for_pos(row, col, 0);
+        if (!se2_grid.index2Pos(idx_for_pos, world_pos)) {
+          continue;
+        }
+
+        // Map world position to the correct OccupancyGrid cell
+        int occ_x = static_cast<int>((world_pos.x() - occ_origin_x) / occ_res);
+        int occ_y = static_cast<int>((world_pos.y() - occ_origin_y) / occ_res);
+
+        if (occ_x < 0 || occ_x >= static_cast<int>(occ_grid.info.width) ||
+            occ_y < 0 || occ_y >= static_cast<int>(occ_grid.info.height)) {
+          continue;
+        }
+
+        int occ_idx = occ_y * occ_grid.info.width + occ_x;
         if (valid) {
           if (max_risk >= risk_threshold_) {
             occ_grid.data[occ_idx] = 100;

@@ -216,6 +216,10 @@ namespace terrain_analyzer
                 beam_sigma2,
                 body2sensor_T);
 
+        // Initialize TF
+        tf_buffer_ = std::make_shared<tf2_ros::Buffer>(node_->get_clock());
+        tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
         // ROS2 publishers
         fused_pub = node_->create_publisher<se2_grid_msgs::msg::SE2Grid>("fused_map", 1);
         sdf_pub = node_->create_publisher<se2_grid_msgs::msg::SE2Grid>("sdf_map", 1);
@@ -243,18 +247,30 @@ namespace terrain_analyzer
 
         t0 = clock();
         // get datas
-        pcl::PointCloud<pcl::PointXYZ> pointCloud;
-        pcl::fromROSMsg(*msg, pointCloud);
+        pcl::PointCloud<pcl::PointXYZ> pointCloudRaw;
+        pcl::fromROSMsg(*msg, pointCloudRaw);
 
-        Matrix<double, 6, 6> robotPoseCovariance;
-        robotPoseCovariance.setZero();
-        
         std::shared_ptr<nav_msgs::msg::Odometry const> poseMessage = odom_cache.getElemBeforeTime(node_->now());
         if (!poseMessage) 
         {
             RCLCPP_WARN(node_->get_logger(), "Odometry time is error, continue.");
             return;
         }
+
+        pcl::PointCloud<pcl::PointXYZ> pointCloud;
+        try {
+            geometry_msgs::msg::TransformStamped transformStamped = tf_buffer_->lookupTransform(
+                poseMessage->header.frame_id, msg->header.frame_id, msg->header.stamp, rclcpp::Duration::from_seconds(0.1));
+            
+            Eigen::Affine3d transform = tf2::transformToEigen(transformStamped);
+            pcl::transformPointCloud(pointCloudRaw, pointCloud, transform.cast<float>());
+        } catch (tf2::TransformException &ex) {
+            RCLCPP_WARN(node_->get_logger(), "Could not transform pointcloud: %s", ex.what());
+            return;
+        }
+
+        Matrix<double, 6, 6> robotPoseCovariance;
+        robotPoseCovariance.setZero();
         robotPoseCovariance = Map<const MatrixXd>(poseMessage->pose.covariance.data(), 6, 6);
         // ready to send to GPU
         MatrixXf& elevation = fused_map["elevation"][0];
@@ -403,7 +419,7 @@ namespace terrain_analyzer
         normal_x = std::string("zbx");
         normal_y = std::string("zby");
         
-        elevation_layer = std::string("inpainted");
+        elevation_layer = std::string("elevation");
         normal_related.emplace_back(normal_x);
         normal_related.emplace_back(normal_y);
         normal_related.emplace_back(elevation_layer);

@@ -3,9 +3,9 @@
 terrain_analyzer_node:
   ros__parameters:
     sensor_processors:
-      use_voxel_filter: false
-      voxel_size: 0.01
-      ignore_z_max: 0.5
+      use_voxel_filter: true
+      voxel_size: 0.05
+      ignore_z_max: 5.0
       ignore_z_min: -2.0
       sensor2BodyR: [1.0, 0.0, 0.0,
                      0.0, 1.0, 0.0,
@@ -25,8 +25,8 @@ terrain_analyzer_node:
       max_var_hori: 0.05
       mahalanobis_threshold: 2.5
       ellipsoid_x: 0.4
-      ellipsoid_y: 0.3
-      ellipsoid_offset: [0.13, 0.0]
+      ellipsoid_y: 0.4
+      ellipsoid_offset: [0.0, 0.0]
       iter_num: 1
 
     gpu_added_params:

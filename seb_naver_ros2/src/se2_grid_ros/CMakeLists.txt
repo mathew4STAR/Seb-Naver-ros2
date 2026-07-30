@@ -14,6 +14,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(Eigen3 REQUIRED)
 
@@ -32,6 +33,7 @@ add_library(${PROJECT_NAME} SHARED
 )
 
 add_executable(se2_visualizer_node src/se2_visualizer_node.cpp)
+add_executable(se2_arrow_visualizer_node src/se2_arrow_visualizer_node.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -59,6 +61,15 @@ ament_target_dependencies(se2_visualizer_node
 )
 target_link_libraries(se2_visualizer_node ${PROJECT_NAME})
 
+ament_target_dependencies(se2_arrow_visualizer_node
+  rclcpp
+  se2_grid_core
+  se2_grid_msgs
+  visualization_msgs
+  geometry_msgs
+)
+target_link_libraries(se2_arrow_visualizer_node ${PROJECT_NAME})
+
 # Ensure message headers are generated before we build
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
@@ -75,7 +86,7 @@ install(
 )
 
 install(
-  TARGETS se2_visualizer_node
+  TARGETS se2_visualizer_node se2_arrow_visualizer_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -90,7 +101,7 @@ ament_export_libraries(${PROJECT_NAME})
 ament_export_targets(export_${PROJECT_NAME})
 ament_export_dependencies(
   rclcpp se2_grid_core se2_grid_msgs
-  sensor_msgs nav_msgs std_msgs geometry_msgs builtin_interfaces
+  sensor_msgs nav_msgs std_msgs geometry_msgs builtin_interfaces visualization_msgs
 )
 
 ament_package()
